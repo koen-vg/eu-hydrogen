@@ -4766,9 +4766,10 @@ def set_temporal_aggregation(n, resolution, snapshot_weightings):
         return n
     else:
         # Otherwise, use the provided snapshots
-        snapshot_weightings = pd.read_csv(
-            snapshot_weightings, index_col=0, parse_dates=True
-        )
+        if isinstance(snapshot_weightings, str):
+            snapshot_weightings = pd.read_csv(
+                snapshot_weightings, index_col=0, parse_dates=True
+            )
 
         # Define a series used for aggregation, mapping each hour in
         # n.snapshots to the closest previous timestep in

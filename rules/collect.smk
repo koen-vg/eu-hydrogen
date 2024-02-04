@@ -59,6 +59,20 @@ rule solve_sector_networks:
         ),
 
 
+if "slack" in config["scenario"]:
+    rule all_near_opt_myopic:
+        input:
+            expand(
+                RESULTS
+                + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_"
+                + str(config["scenario"]["planning_horizons"][-1])
+                + "_{sense}{slack}.nc",
+                **config["scenario"],
+                sense=["min", "max"],
+                run=config["run"]["name"],
+            ),
+
+
 rule solve_sector_networks_perfect:
     input:
         expand(

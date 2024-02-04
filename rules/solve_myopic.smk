@@ -30,22 +30,23 @@ rule add_existing_baseyear:
         heating_efficiencies=resources("heating_efficiencies.csv"),
     output:
         RESULTS
-        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}{near_opt}.nc",
     wildcard_constraints:
         # TODO: The first planning_horizon needs to be aligned across scenarios
         # snakemake does not support passing functions to wildcard_constraints
         # reference: https://github.com/snakemake/snakemake/issues/2703
         planning_horizons=config["scenario"]["planning_horizons"][0],  #only applies to baseyear
+        near_opt=r"(_(min|max)[0-9\.]+)?",
     threads: 1
     resources:
         mem_mb=2000,
     log:
         RESULTS
-        + "logs/add_existing_baseyear_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log",
+        + "logs/add_existing_baseyear_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}{near_opt}.log",
     benchmark:
         (
             RESULTS
-            + "benchmarks/add_existing_baseyear/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
+            + "benchmarks/add_existing_baseyear/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}{near_opt}"
         )
     conda:
         "../envs/environment.yaml"
@@ -83,17 +84,19 @@ rule add_brownfield:
         cop_profiles=resources("cop_profiles_base_s_{clusters}.nc"),
     output:
         RESULTS
-        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}{near_opt}.nc",
+    wildcard_constraints:
+        near_opt=r"(_(min|max)[0-9\.]+)?",
     threads: 4
     resources:
         mem_mb=10000,
     log:
         RESULTS
-        + "logs/add_brownfield_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log",
+        + "logs/add_brownfield_base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}{near_opt}.log",
     benchmark:
         (
             RESULTS
-            + "benchmarks/add_brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
+            + "benchmarks/add_brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}{near_opt}"
         )
     conda:
         "../envs/environment.yaml"
@@ -132,14 +135,69 @@ rule solve_sector_network_myopic:
         + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_python.log",
     threads: solver_threads
     resources:
-        mem_mb=config_provider("solving", "mem_mb"),
-        runtime=config_provider("solving", "runtime", default="6h"),
+        mem_mb=lambda w, attempt: (
+            config_provider("solving", "mem_mb")(w) * (1.5 ** (attempt - 1))
+        ),
+        runtime=lambda w, attempt: (
+            min(
+                config_provider("solving", "runtime", default="6h")(w) * attempt,
+                4320, # 3 days
+            )
+        ),
     benchmark:
         (
             RESULTS
             + "benchmarks/solve_sector_network/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
         )
+    priority: 10
     conda:
         "../envs/environment.yaml"
     script:
         "../scripts/solve_network.py"
+
+
+rule near_opt_myopic:
+    params:
+        solving=config_provider("solving"),
+        near_opt=config_provider("near_opt"),
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        sector=config_provider("sector"),
+        build_year_agg=config_provider("clustering", "build_year_aggregation"),
+        custom_extra_functionality=input_custom_extra_functionality,
+    input:
+        network=RESULTS
+        + "prenetworks-brownfield/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}.nc",
+        network_opt=RESULTS
+        + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+    output:
+        RESULTS
+        + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}.nc",
+    shadow:
+        "shallow"
+    log:
+        solver=RESULTS
+        + "logs/near_opt_myopic/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}_solver.log",
+        memory=RESULTS
+        + "logs/near_opt_myopic/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}_memory.log",
+        python=RESULTS
+        + "logs/near_opt_myopic/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}_python.log",
+    threads: solver_threads
+    resources:
+        mem_mb=lambda w, attempt: (
+            config_provider("solving", "mem_mb")(w) * (1.5 ** (attempt - 1))
+        ),
+        runtime=lambda w, attempt: (
+            min(
+                config_provider("solving", "runtime", default="6h")(w) * attempt,
+                4320, # 3 days
+            )
+        ),
+    benchmark:
+        (
+            RESULTS
+            + "benchmarks/solve_sector_network/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}"
+        )
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/near_opt_myopic.py"

@@ -144,5 +144,6 @@ def solved_previous_horizon(w):
         RESULTS
         + "postnetworks/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_"
         + planning_horizon_p
+        + w.near_opt
         + ".nc"
     )

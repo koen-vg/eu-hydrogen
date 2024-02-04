@@ -132,7 +132,7 @@ preferred_order = pd.Index(
 )
 
 
-def plot_costs():
+def plot_costs(snakemake, n_header):
     cost_df = pd.read_csv(
         snakemake.input.costs, index_col=list(range(3)), header=list(range(n_header))
     )
@@ -190,7 +190,7 @@ def plot_costs():
     fig.savefig(snakemake.output.costs, bbox_inches="tight")
 
 
-def plot_energy():
+def plot_energy(snakemake, n_header):
     energy_df = pd.read_csv(
         snakemake.input.energy, index_col=list(range(2)), header=list(range(n_header))
     )
@@ -262,7 +262,7 @@ def plot_energy():
     fig.savefig(snakemake.output.energy, bbox_inches="tight")
 
 
-def plot_balances():
+def plot_balances(snakemake, n_header):
     co2_carriers = ["co2", "co2 stored", "process emissions"]
 
     balances_df = pd.read_csv(
@@ -578,11 +578,11 @@ if __name__ == "__main__":
 
     n_header = 4
 
-    plot_costs()
+    plot_costs(snakemake, n_header)
 
-    plot_energy()
+    plot_energy(snakemake, n_header)
 
-    plot_balances()
+    plot_balances(snakemake, n_header)
 
     co2_budget = snakemake.params["co2_budget"]
     if (

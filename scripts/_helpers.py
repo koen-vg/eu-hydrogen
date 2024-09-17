@@ -571,6 +571,25 @@ def parse(infix):
         return {infix.pop(0): parse(infix)}
 
 
+def list_to_nested_dict(l):
+    if len(l) == 1:
+        return l[0]
+    else:
+        return {l[0]: list_to_nested_dict(l[1:])}
+
+
+def apply_configured_opts(config, opts):
+    if "sector_opts" in config:
+        # Read in options specified in config["sector_opts"]
+        for opt_class in config["sector_opts"]:
+            for level in config["sector_opts"][opt_class]:
+                if f"{opt_class}{level}" in opts:
+                    for setting, value in config["sector_opts"][opt_class][level].items():
+                        # Apply the setting as given in config["options_mapping"]
+                        for path in config["options_mapping"][setting]:
+                            update_config(config, list_to_nested_dict(path + [value]))
+
+
 def update_config_from_wildcards(config, w, inplace=True):
     """
     Parses configuration settings from wildcards and updates the config.
@@ -750,6 +769,8 @@ def update_config_from_wildcards(config, w, inplace=True):
 
         if "aggBuildYear" in opts:
             config["clustering"]["build_year_aggregation"]["enable"] = True
+
+        apply_configured_opts(config, opts)
 
         # any config option can be represented in wildcard
         for o in opts:

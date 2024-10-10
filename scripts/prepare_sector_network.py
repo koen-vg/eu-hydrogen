@@ -617,7 +617,7 @@ def add_eu_bus(n, x=-5.5, y=46):
     n.add("Carrier", "none")
 
 
-def add_co2_tracking(n, costs, options):
+def add_co2_tracking(n, costs, options, emissions_other):
     # minus sign because opposite to how fossil fuels used:
     # CH4 burning puts CH4 down, atmosphere up
     n.add("Carrier", "co2", co2_emissions=-1.0)
@@ -633,6 +633,19 @@ def add_co2_tracking(n, costs, options):
         e_min_pu=-1,
         carrier="co2",
         bus="co2 atmosphere",
+    )
+
+    # add agriculture and LULUFC emissions as negative load to atmosphere
+    net_yearly_emissions = (
+        get(emissions_other["agriculture"], investment_year)
+        + get(emissions_other["LULUCF"], investment_year)
+    ) * 1e6
+    n.add(
+        "Load",
+        name="net agriculture and LULUCF emissions",
+        bus="co2 atmosphere",
+        carrier="net_agriculture_LULUCF",
+        p_set=-net_yearly_emissions / 8760,
     )
 
     # add CO2 tanks
@@ -5213,7 +5226,12 @@ if __name__ == "__main__":
 
     add_eu_bus(n)
 
-    add_co2_tracking(n, costs, options)
+    add_co2_tracking(
+        n,
+        costs,
+        options,
+        snakemake.params.emissions_other,
+    )
 
     add_generation(n, costs)
 

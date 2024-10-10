@@ -372,6 +372,23 @@ energy:
   base_emissions_year: 1990
   emissions: CO2
 
+emissions_other:
+  # Emissions are given in MtCO2-eq. Source: EU Impact Assessment on a 2040 Climate Target (https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A52024SC0063), Annex 8.
+  # These values unfortunately only include the EU proper.
+  agriculture:
+    # Historical value and no-mitigation estimate for 2030.
+    2015: 385
+    2030: 361
+    # Values for 2040-2050 taken from the LIFE scenario which assumes changes in the food system in terms of dietary changes, food waste reduction etc.
+    2040: 271
+    2050: 269
+  LULUCF:
+    2020: -230
+    2030: -310  # Official target
+    # Values for 2040-2050 taken from the LIFE scenario
+    2040: -360
+    2050: -389
+
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#biomass
 biomass:
   year: 2030
@@ -1413,3 +1430,4 @@ plotting:
     waste CHP CC: '#e3d3ff'
     HVC to air: 'k'
     curtailment: "#000000"
+    net_agriculture_LULUCF: '#58aa71'

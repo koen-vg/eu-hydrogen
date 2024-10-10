@@ -210,6 +210,7 @@ rule make_summary:
         RESULTS + "logs/make_summary.log",
     conda:
         "../envs/environment.yaml"
+    localrule: True
     script:
         "../scripts/make_summary.py"
 
@@ -297,6 +298,7 @@ rule make_summary_near_opt:
         RESULTS + "logs/make_summary_near_opt.log",
     conda:
         "../envs/environment.yaml"
+    localrule: True
     script:
         "../scripts/make_summary_near_opt.py"
 
@@ -328,6 +330,7 @@ rule plot_summary:
         RESULTS + "logs/plot_summary.log",
     conda:
         "../envs/environment.yaml"
+    localrule: True
     script:
         "../scripts/plot_summary.py"
 

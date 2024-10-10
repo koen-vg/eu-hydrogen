@@ -335,7 +335,7 @@ rule build_solar_thermal_profiles:
     output:
         solar_thermal=resources("solar_thermal_total_base_s_{clusters}.nc"),
     resources:
-        mem_mb=20000,
+        mem_mb=30000,
     threads: 16
     log:
         logs("build_solar_thermal_profiles_total_s_{clusters}.log"),

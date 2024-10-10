@@ -676,7 +676,7 @@ def update_config_from_wildcards(config, w, inplace=True):
         for o in opts:
             if eq_value is not None:
                 config["solving"]["constraints"]["EQ"] = eq_value
-            elif "EQ" in o:
+            elif o == "EQ":
                 config["solving"]["constraints"]["EQ"] = True
             break
 

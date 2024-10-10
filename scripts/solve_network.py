@@ -1328,7 +1328,9 @@ def disaggregate_build_years(n, indices, planning_horizon):
     logger.info(f"Disaggregated build years in {time.time() - t:.1f} seconds")
 
 
-def solve_network(n, config, params, solving, build_year_agg, rule, current_horizon, **kwargs):
+def solve_network(
+    n, config, params, solving, build_year_agg, rule, current_horizon, **kwargs
+):
     set_of_options = solving["solver"]["options"]
     cf_solving = solving["options"]
 
@@ -1347,6 +1349,19 @@ def solve_network(n, config, params, solving, build_year_agg, rule, current_hori
 
     if kwargs["solver_name"] == "gurobi":
         logging.getLogger("gurobipy").setLevel(logging.CRITICAL)
+
+    if "model_options" in solving:
+        kwargs["model_kwargs"] = solving["model_options"]
+
+        if (
+            "solver_dir" in kwargs["model_kwargs"]
+            and "$" in kwargs["model_kwargs"]["solver_dir"]
+        ):
+            # Resolve env var as path
+            kwargs["model_kwargs"]["solver_dir"] = os.path.expandvars(
+                kwargs["model_kwargs"]["solver_dir"]
+            )
+            logger.info(f"Set solver_dir to {kwargs['model_kwargs']['solver_dir']}")
 
     rolling_horizon = cf_solving.pop("rolling_horizon", False)
     skip_iterations = cf_solving.pop("skip_iterations", False)

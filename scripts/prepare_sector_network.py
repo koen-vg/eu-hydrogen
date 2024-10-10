@@ -111,6 +111,7 @@ def define_spatial(nodes, options):
         spatial.gas.biogas = nodes + " biogas"
         spatial.gas.industry = nodes + " gas for industry"
         spatial.gas.industry_cc = nodes + " gas for industry CC"
+        spatial.gas.shipping = nodes + " shipping gas"
         spatial.gas.biogas_to_gas = nodes + " biogas to gas"
         spatial.gas.biogas_to_gas_cc = nodes + " biogas to gas CC"
     else:
@@ -118,6 +119,7 @@ def define_spatial(nodes, options):
         spatial.gas.locations = ["EU"]
         spatial.gas.biogas = ["EU biogas"]
         spatial.gas.industry = ["gas for industry"]
+        spatial.gas.shipping = ["EU shipping gas"]
         spatial.gas.biogas_to_gas = ["EU biogas to gas"]
         if options.get("biomass_spatial", options["biomass_transport"]):
             spatial.gas.biogas_to_gas_cc = nodes + " biogas to gas CC"
@@ -137,9 +139,11 @@ def define_spatial(nodes, options):
         if options.get("ammonia") == "regional":
             spatial.ammonia.nodes = nodes + " NH3"
             spatial.ammonia.locations = nodes
+            spatial.ammonia.shipping = nodes + " shipping NH3"
         else:
             spatial.ammonia.nodes = ["EU NH3"]
             spatial.ammonia.locations = ["EU"]
+            spatial.ammonia.shipping = ["EU shipping NH3"]
 
         spatial.ammonia.df = pd.DataFrame(vars(spatial.ammonia), index=nodes)
 
@@ -3828,10 +3832,18 @@ def add_industry(n, costs):
     )
 
     shipping_hydrogen_share = get(options["shipping_hydrogen_share"], investment_year)
-    shipping_methanol_share = get(options["shipping_methanol_share"], investment_year)
     shipping_oil_share = get(options["shipping_oil_share"], investment_year)
+    shipping_gas_share = get(options["shipping_gas_share"], investment_year)
+    shipping_methanol_share = get(options["shipping_methanol_share"], investment_year)
+    shipping_ammonia_share = get(options["shipping_ammonia_share"], investment_year)
 
-    total_share = shipping_hydrogen_share + shipping_methanol_share + shipping_oil_share
+    total_share = (
+        shipping_hydrogen_share
+        + shipping_methanol_share
+        + shipping_oil_share
+        + shipping_gas_share
+        + shipping_ammonia_share
+    )
     if total_share != 1:
         logger.warning(
             f"Total shipping shares sum up to {total_share:.2%}, corresponding to increased or decreased demand assumptions."
@@ -3972,6 +3984,84 @@ def add_industry(n, costs):
             carrier="shipping oil",
             p_nom_extendable=True,
             efficiency2=costs.at["oil", "CO2 intensity"],
+        )
+
+    if shipping_gas_share:
+        efficiency = (
+            options["shipping_oil_efficiency"] / options["shipping_gas_efficiency"]
+        )
+
+        p_set_gas = (
+            efficiency
+            * shipping_gas_share
+            * p_set.rename(lambda x: x + " shipping gas")
+        )
+
+        if not options["gas_network"]:
+            p_set_gas = p_set_gas.sum()
+
+        n.madd(
+            "Bus",
+            spatial.gas.shipping,
+            location=spatial.gas.locations,
+            carrier="shipping gas",
+            unit="MWh_LHV",
+        )
+
+        n.madd(
+            "Load",
+            spatial.gas.shipping,
+            bus=spatial.gas.shipping,
+            carrier="shipping gas",
+            p_set=p_set_gas,
+        )
+
+        n.madd(
+            "Link",
+            spatial.gas.shipping,
+            bus0=spatial.gas.nodes,
+            bus1=spatial.gas.shipping,
+            bus2="co2 atmosphere",
+            carrier="shipping gas",
+            p_nom_extendable=True,
+            efficiency2=costs.at["gas", "CO2 intensity"],
+        )
+
+    if shipping_ammonia_share:
+        efficiency = (
+            options["shipping_oil_efficiency"] / options["shipping_ammonia_efficiency"]
+        )
+
+        p_set_ammonia = shipping_ammonia_share * p_set.rename(
+            lambda x: x + " shipping ammonia"
+        )
+
+        if options["ammonia"] != "regional":
+            p_set_ammonia = p_set_ammonia.sum()
+
+        n.madd(
+            "Bus",
+            spatial.ammonia.shipping,
+            location=spatial.ammonia.locations,
+            carrier="shipping ammonia",
+            unit="MWh_LHV",
+        )
+
+        n.madd(
+            "Load",
+            spatial.ammonia.shipping,
+            bus=spatial.ammonia.shipping,
+            carrier="shipping ammonia",
+            p_set=p_set_ammonia,
+        )
+
+        n.madd(
+            "Link",
+            spatial.ammonia.shipping,
+            bus0=spatial.ammonia.nodes,
+            bus1=spatial.ammonia.shipping,
+            carrier="shipping ammonia",
+            p_nom_extendable=True,
         )
 
     if options["oil_boilers"]:

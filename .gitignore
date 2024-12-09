@@ -19,7 +19,6 @@ gurobi.log
 /networks
 /benchmarks
 /logs
-/notebooks
 /data
 /cutouts
 /tmp
@@ -58,8 +57,6 @@ d1gam3xoknrgr2.cloudfront.net/
 
 *.org
 
-*.nc
-
 *~
 
 *.pyc
@@ -69,8 +66,6 @@ d1gam3xoknrgr2.cloudfront.net/
 *.xls
 
 *.geojson
-
-*.ipynb
 
 merger-todos.md
 

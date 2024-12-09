@@ -158,24 +158,6 @@ clustering:
   build_year_aggregation:
     enable: true
     exclude_carriers:
-      # Carriers involved in supplying industrial process heat should
-      # not be clustered since they are optimised endogenously and may
-      # have to be phased out early (which wouldn't be possible with
-      # build year aggregation.)
-      # - "lowT industry solid biomass"
-      # - "lowT industry solid biomass CC"
-      # - "lowT industry methane"
-      # - "lowT industry methane CC"
-      # - "lowT industry heat pump"
-      # - "lowT industry electricity"
-      # - "solid biomass for mediumT industry"
-      # - "solid biomass for mediumT industry CC"
-      # - "gas for mediumT industry"
-      # - "gas for mediumT industry CC"
-      # - "hydrogen for mediumT industry"
-      # - "gas for highT industry"
-      # - "gas for highT industry CC"
-      # - "hydrogen for highT industry"
       # Excluding the following improves accuracy as efficiency changes over time
       - "H2 Electrolysis"
       - "process emissions CC"
@@ -375,22 +357,6 @@ solving:
 
   model_options:
     solver_dir: "$SCRATCH"
-
-  # For 100seg/45
-  # mem_mb: 3000
-  # runtime: 30
-
-  # For 300seg/45
-  # mem_mb: 6000
-  # runtime: 200
-
-  # For 500seg/45
-  # mem_mb: 8000  # typically around 7000
-  # runtime: 300  # typically more like 20-30, can be longer due to numerical trouble
-
-  # For 1000seg/45
-  # mem_mb: 13000  # typically around 11-12000; some maximisation take more
-  # runtime: 200   # typically more like 50, but some runs can take much longer
 
   # For 1500seg/60
   mem_mb: 40000  # In practice: ~24-25GB, but with spike in the beginning

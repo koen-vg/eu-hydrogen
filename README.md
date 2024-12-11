@@ -1,6 +1,6 @@
 # Little to lose: the case for a robust European green hydrogen strategy
 
-This repository contains the necessary code to reproduce the results in the paper "Little to lose: the case for a robust European green hydrogen strategy". The repository is based directly on [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur). Modifications can be inspected here in the git history, and are also documented in the paper.
+This repository contains the necessary code to reproduce the results in the paper "Little to lose: the case for a robust European green hydrogen strategy" ([preprint](https://arxiv.org/abs/2412.07464)). The repository is based directly on [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur). Modifications can be inspected here in the git history, and are also documented in the paper.
 
 The main results are based on the `config/eu-hydrogen.yaml` configuration. In order to reproduce the results, follow the PyPSA-Eur installation instructions and run:
 ```bash

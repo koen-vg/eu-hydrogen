@@ -1,5 +1,6 @@
 run:
-  name: "electrification-low-res"
+  name: "all"
+  prefix: "electrification-low-res"
   scenarios:
     enable: true
     file: "config/scenarios.yaml"

@@ -73,7 +73,7 @@ sector_opts:
       seq_2050: 550
     c:
       # Optimistic CCS scenario
-      carbon_capture_cost: 0.9
+      carbon_capture_cost: 0.5
       sequestration_cost: 15
       seq_2025: 0
       seq_2030: 100
@@ -100,25 +100,7 @@ options_mapping:
   electrolysis_cost:
   - ["adjustments", "sector", "factor", "Link", "H2 Electrolysis", "capital_cost"]
   carbon_capture_cost:
-  # The following are all carbon-capture tech carriers in the model
-  - ["adjustments", "sector", "factor", "Link", "H2 Electrolysis", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "SMR CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biomass to liquid CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "BioSNG", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass to hydrogen", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biomass-to-methanol CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "urban central gas CHP CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biogas to gas CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "urban central solid biomass CHP CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass for industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "process emissions CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "DAC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "lowT industry solid biomass CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "lowT industry methane CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass for mediumT industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for mediumT industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for highT industry CC", "capital_cost"]
+  - ["sector", "carbon_capture_cost_factor"]
   sequestration_cost:
   - ["sector", "co2_sequestration_cost"]
   seq_2025:

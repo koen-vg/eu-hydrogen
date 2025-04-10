@@ -1,0 +1,449 @@
+run:
+  name: "all"
+  prefix: "emission-reductions"
+  scenarios:
+    enable: true
+    file: "config/emission-reduction-scenarios.yaml"
+  disable_progressbar: true
+  shared_cutouts: true
+
+enable:
+  # Prevent the config from updating retrieved input data; set this to
+  # true for a fresh run.
+  retrieve: false
+
+foresight: "myopic"
+
+scenario:
+  ll:
+  - c1.5
+  clusters:
+  - 50
+  opts:
+  - ""
+  sector_opts:
+  - "Ca-Ia-Ea-Tb"
+  - "Cb-Ia-Ea-Tb"
+  - "Cc-Ia-Ea-Tb"
+  - "Ca-Ib-Ea-Tb"
+  - "Cb-Ib-Ea-Tb"
+  - "Cc-Ib-Ea-Tb"
+  - "Ca-Ia-Eb-Tb"
+  - "Cb-Ia-Eb-Tb"
+  - "Cc-Ia-Eb-Tb"
+  - "Ca-Ib-Eb-Tb"
+  - "Cb-Ib-Eb-Tb"
+  - "Cc-Ib-Eb-Tb"
+  planning_horizons:
+  - 2025
+  - 2030
+  - 2035
+  - 2040
+  - 2045
+  - 2050
+  slack:
+  - 0.02
+  - 0.05
+  - 0.1
+
+near_opt:
+  weights:
+    varying:
+      Link:
+        p:
+          "H2 Electrolysis": 1
+  slack_initial_fraction: 0.75
+  obj_bound_scaling_factor: 1e-3
+
+sector_opts:
+  C:
+    a:
+      # Pessimistic CCS scenario
+      carbon_capture_cost: 1.5
+      sequestration_cost: 30
+      seq_2025: 0
+      seq_2030: 25
+      seq_2035: 75
+      seq_2040: 125
+      seq_2045: 200
+      seq_2050: 275
+    b:
+      # Middle-of-the-road CCS scenario
+      carbon_capture_cost: 1.0
+      sequestration_cost: 20
+      seq_2025: 0
+      seq_2030: 50
+      seq_2035: 150
+      seq_2040: 250
+      seq_2045: 400
+      seq_2050: 550
+    c:
+      # Optimistic CCS scenario
+      carbon_capture_cost: 0.5
+      sequestration_cost: 15
+      seq_2025: 0
+      seq_2030: 100
+      seq_2035: 300
+      seq_2040: 500
+      seq_2045: 800
+      seq_2050: 1100
+  I:
+    a:
+      # Pessimistic imports
+      green_imports_lim: true
+    b:
+      # Optimistic imports
+      green_imports_lim: false
+  E:
+    a:
+      # Pessimistic electrolysis costs
+      electrolysis_cost: 1.5
+    b:
+      # Optimistic electrolysis costs
+      electrolysis_cost: 0.5
+  T:
+    a:
+      # Pessimistic electrification: 5 years delayed
+      fc_share_2025: 0
+      fc_share_2030: 0
+      fc_share_2035: 0.004
+      fc_share_2040: 0.039
+      fc_share_2045: 0.073
+      fc_share_2050: 0.127
+
+      ev_share_2025: 0.062
+      ev_share_2030: 0.062
+      ev_share_2035: 0.123
+      ev_share_2040: 0.308
+      ev_share_2045: 0.493
+      ev_share_2050: 0.606
+
+      ice_share_2025: 0.938
+      ice_share_2030: 0.938
+      ice_share_2035: 0.873
+      ice_share_2040: 0.653
+      ice_share_2045: 0.434
+      ice_share_2050: 0.267
+    b:
+      # Baseline electrification
+      fc_share_2025: 0
+      fc_share_2030: 0.004 # EU Climate impact study
+      fc_share_2035: 0.039 # Midpoint
+      fc_share_2040: 0.073 # EU Climate impact study
+      fc_share_2045: 0.127 # Midpoint
+      fc_share_2050: 0.180 # EU Climate impact study
+
+      ev_share_2025: 0.062 # Midpoint
+      ev_share_2030: 0.123 # EU Climate impact study
+      ev_share_2035: 0.308 # Midpoint
+      ev_share_2040: 0.493 # EU Climate impact study
+      ev_share_2045: 0.606 # Midpoint
+      ev_share_2050: 0.719 # EU Climate impact study
+
+      ice_share_2025: 0.938
+      ice_share_2030: 0.873
+      ice_share_2035: 0.653
+      ice_share_2040: 0.434
+      ice_share_2045: 0.267
+      ice_share_2050: 0.101
+    c:
+      # Optimistic electrification: 5 years sooner
+      fc_share_2025: 0.000
+      fc_share_2030: 0.013
+      fc_share_2035: 0.024
+      fc_share_2040: 0.042
+      fc_share_2045: 0.059
+      fc_share_2050: 0.059
+
+      ev_share_2025: 0.062
+      ev_share_2030: 0.382
+      ev_share_2035: 0.622
+      ev_share_2040: 0.769
+      ev_share_2045: 0.916
+      ev_share_2050: 0.916
+
+      ice_share_2025: 0.938
+      ice_share_2030: 0.605
+      ice_share_2035: 0.354
+      ice_share_2040: 0.189
+      ice_share_2045: 0.025
+      ice_share_2050: 0.025
+
+options_mapping:
+  electrolysis_cost:
+  - ["adjustments", "sector", "factor", "Link", "H2 Electrolysis", "capital_cost"]
+  carbon_capture_cost:
+  - ["sector", "carbon_capture_cost_factor"]
+  sequestration_cost:
+  - ["sector", "co2_sequestration_cost"]
+  seq_2025:
+  - ["sector", "co2_sequestration_potential", 2025]
+  seq_2030:
+  - ["sector", "co2_sequestration_potential", 2030]
+  seq_2035:
+  - ["sector", "co2_sequestration_potential", 2035]
+  seq_2040:
+  - ["sector", "co2_sequestration_potential", 2040]
+  seq_2045:
+  - ["sector", "co2_sequestration_potential", 2045]
+  seq_2050:
+  - ["sector", "co2_sequestration_potential", 2050]
+  green_imports_lim:
+  - ["solving", "constraints", "green_imports_lim"]
+  fc_share_2025:
+  - ["sector", "land_transport_fuel_cell_share", 2025]
+  fc_share_2030:
+  - ["sector", "land_transport_fuel_cell_share", 2030]
+  fc_share_2035:
+  - ["sector", "land_transport_fuel_cell_share", 2035]
+  fc_share_2040:
+  - ["sector", "land_transport_fuel_cell_share", 2040]
+  fc_share_2045:
+  - ["sector", "land_transport_fuel_cell_share", 2045]
+  fc_share_2050:
+  - ["sector", "land_transport_fuel_cell_share", 2050]
+  ev_share_2025:
+  - ["sector", "land_transport_electric_share", 2025]
+  ev_share_2030:
+  - ["sector", "land_transport_electric_share", 2030]
+  ev_share_2035:
+  - ["sector", "land_transport_electric_share", 2035]
+  ev_share_2040:
+  - ["sector", "land_transport_electric_share", 2040]
+  ev_share_2045:
+  - ["sector", "land_transport_electric_share", 2045]
+  ev_share_2050:
+  - ["sector", "land_transport_electric_share", 2050]
+  ice_share_2025:
+  - ["sector", "land_transport_ice_share", 2025]
+  ice_share_2030:
+  - ["sector", "land_transport_ice_share", 2030]
+  ice_share_2035:
+  - ["sector", "land_transport_ice_share", 2035]
+  ice_share_2040:
+  - ["sector", "land_transport_ice_share", 2040]
+  ice_share_2045:
+  - ["sector", "land_transport_ice_share", 2045]
+  ice_share_2050:
+  - ["sector", "land_transport_ice_share", 2050]
+  
+
+# Country selection: EU-27, excluding Cyprus, Malta, including Norway, UK, Switzerland, and Balkan countries excluding Kosovo (Serbia, Montenegro, Albania, North Macedonia)
+countries: ["AL", "AT", "BA", "BE", "BG", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "ME", "MK", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK"]
+
+co2_budget:
+  2025: 0.65
+  2030: 0.45  # EU target
+  2035: 0.275 # Linear interpolation
+  2040: 0.1   # EU target
+  2045: 0.05  # Linear interpolation
+  2050: 0.0   # Net neutrality
+
+costs:
+  # Technology data repository version containing green fuel import costs
+  version: "koen-vg/technology-data/v0.9.2-2023eur-imports"
+
+snapshots:
+  start: "1987-01-01 00:00"
+  end: "1987-12-31 23:00"
+  inclusive: "both"
+
+clustering:
+  temporal:
+    resolution_sector: "500seg"
+  build_year_aggregation:
+    enable: true
+    exclude_carriers:
+      # Excluding the following improves accuracy as efficiency changes over time
+      - "H2 Electrolysis"
+      - "process emissions CC"
+
+# Use default configuration for which generators to include, except for excluding solar-hsat and geothermal.
+electricity:
+  extendable_carriers:
+    # Extendable renewables are created here, but conventional
+    # extendable generation is handled in sector config section.
+    # Don't include solar-hsat: just leads to greating solving times.
+    Generator: [solar, onwind, offwind-ac, offwind-dc, offwind-float]
+    StorageUnit: []
+    Store: []
+    Link: []
+
+  # Conventional carriers are all added in prepare_sector_network and add_existing_baseyear
+  conventional_carriers: [nuclear, oil, OCGT, CCGT, coal, lignite, biomass]
+  renewable_carriers: [solar, onwind, offwind-ac, offwind-dc, hydro, offwind-float]
+
+  # This is only used for overnight foresight.
+  estimate_renewable_capacities:
+    enable: false
+
+sector:
+  # For shipping demand exogenous assumptions, see config.default.yaml.
+  # Include ammonia sector
+  ammonia: true
+  # Include both H2 and gas networks
+  H2_network: true
+  gas_network: true
+  # Include the option for allam cycle gas turbines
+  allam_cycle: true
+  # Allow the use of biomass for biofuel and hydrogen production
+  biomass_to_liquid: true
+  bioH2: true
+  # Allow the use of methanol for power production
+  methanol:
+    allam: true
+    biomass_to_methanol: true
+    biomass_to_methanol_cc: true
+  # Don't model transmission losses to save on solving time
+  transmission_efficiency_enabled: false
+  # Disable distribution grids, again speeding up solving times
+  electricity_distribution_grid: false
+  gas_distribution_grid: false
+  # Model heat supply to industry endogenously (allowing process heat from hydrogen)
+  industry_t:
+    endogen: true
+    # The must_run (i.e. p_min_pu) is set to 0 since positive values can lead to infeasibility
+    must_run: 0.0
+  # Allow expansion of conventional gas power plants, nuclear
+  conventional_generation:
+    OCGT: "gas"
+    nuclear: "uranium"
+  # For build year aggregation, need central heating everywhere
+  central_heat_everywhere: true
+  # For feasibility, need heat vent
+  central_heat_vent: true
+  # Turn off minimum part load to avoid infeasibility
+  min_part_load_fischer_tropsch: 0.
+  min_part_load_methanolisation: 0.
+  min_part_load_methanation: 0.
+  heat_demand_cutout: europe-era5_1987
+  # Shipping assumptions, from https://www.transportenvironment.org/uploads/files/FuelEU-Maritime-Impact-Assessment.pdf
+  shipping_methanol_share:
+    2020: 0
+    2025: 0.04
+    2030: 0.04
+    2035: 0.04
+    2040: 0.04
+    2045: 0.04
+    2050: 0.04
+  shipping_ammonia_share:
+    2020: 0
+    2025: 0
+    2030: 0
+    2035: 0.06
+    2040: 0.24
+    2045: 0.42
+    2050: 0.59
+  shipping_gas_share:
+    2020: 0
+    2025: 0.11
+    2030: 0.27
+    2035: 0.40
+    2040: 0.39
+    2045: 0.37
+    2050: 0.37
+  shipping_oil_share:
+    2020: 1
+    2025: 0.85
+    2030: 0.69
+    2035: 0.50
+    2040: 0.33
+    2045: 0.17
+    2050: 0
+
+# In prepare_sector_network, keep the following existing generators. Note: _do not_ include nuclear as this is added back with historical capacities as a link in sector-coupled network.
+pypsa_eur:
+  Bus:
+  - AC
+  Link:
+  - DC
+  Generator:
+  - onwind
+  - offwind-ac
+  - offwind-dc
+  - offwind-float
+  - solar
+  - ror
+  StorageUnit:
+  - PHS
+  - hydro
+  Store: []
+
+# Use only ERA5 cutout
+atlite:
+  default_cutout: europe-era5_2013
+  nprocesses: 4
+  show_progress: false
+
+renewable:
+  solar:
+    # Since we use ERA5 for solar, apply recommended correction factor
+    # (https://github.com/PyPSA/pypsa-eur/pull/304)
+    correction_factor: 0.854337
+    cutout: europe-era5_1987
+  hydro:
+    # Upscale historical total production data (used for
+    # normalisation) to current day capacities.
+    eia_correct_by_capacity: true
+    # Approximate missing historical data
+    eia_approximate_missing: true
+    cutout: europe-era5_1987
+  onwind:
+    cutout: europe-era5_1987
+  offwind-ac:
+    cutout: europe-era5_1987
+  offwind-dc:
+    cutout: europe-era5_1987
+  offwind-float:
+    cutout: europe-era5_1987
+
+solar_thermal:
+  cutout: europe-era5_1987
+
+lines:
+  dynamic_line_rating:
+    cutout: europe-era5_1987
+
+solving:
+  options:
+    # Don't use noisy costs; makes solving time inconsistent
+    noisy_costs: false
+    # Don't model transmission losses to save solving time
+    transmission_losses: 0
+    # "Curtailment mode" models renewable curtailment with one
+    # generator per node and improves solving time.
+    curtailment_mode: true
+
+  solver:
+    name: "gurobi"
+    options: "gurobi"
+
+  solver_options:
+    gurobi:
+      method: 2
+      threads: 3
+      NumericFocus: 0
+      BarHomogeneous: 0
+      return_model: false
+      AggFill: 0
+      PreDual: 0
+      GURO_PAR_BARDENSETHRESH: 200
+      crossover: 0
+    gurobi-numeric:
+      method: 2
+      threads: 3
+      NumericFocus: 3
+      BarHomogeneous: 1
+      return_model: false
+      BarConvTol: 1.e-4
+      FeasibilityTol: 1.e-3
+      OptimalityTol: 1.e-3
+      AggFill: 0
+      PreDual: 0
+      GURO_PAR_BARDENSETHRESH: 200
+      crossover: 0
+
+  model_options:
+    solver_dir: "$SCRATCH"
+
+  runtime: 500

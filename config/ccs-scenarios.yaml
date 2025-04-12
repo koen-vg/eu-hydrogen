@@ -5,43 +5,48 @@ run:
   disable_progressbar: true
   shared_cutouts: true
 
+enable:
+  # Prevent the config from updating retrieved input data; set this to
+  # true for a fresh run.
+  retrieve: false
+
 foresight: "myopic"
 
 scenario:
   ll:
   - c1.5
   clusters:
-  - 60
+  - 50
   opts:
   - ""
   sector_opts:
-  - "SEQa-SEQCOSTa-CCCOSTa-1000seg"
-  - "SEQb-SEQCOSTa-CCCOSTa-1000seg"
-  - "SEQc-SEQCOSTa-CCCOSTa-1000seg"
-  - "SEQa-SEQCOSTb-CCCOSTa-1000seg"
-  - "SEQb-SEQCOSTb-CCCOSTa-1000seg"
-  - "SEQc-SEQCOSTb-CCCOSTa-1000seg"
-  - "SEQa-SEQCOSTc-CCCOSTa-1000seg"
-  - "SEQb-SEQCOSTc-CCCOSTa-1000seg"
-  - "SEQc-SEQCOSTc-CCCOSTa-1000seg"
-  - "SEQa-SEQCOSTa-CCCOSTb-1000seg"
-  - "SEQb-SEQCOSTa-CCCOSTb-1000seg"
-  - "SEQc-SEQCOSTa-CCCOSTb-1000seg"
-  - "SEQa-SEQCOSTb-CCCOSTb-1000seg"
-  - "SEQb-SEQCOSTb-CCCOSTb-1000seg"
-  - "SEQc-SEQCOSTb-CCCOSTb-1000seg"
-  - "SEQa-SEQCOSTc-CCCOSTb-1000seg"
-  - "SEQb-SEQCOSTc-CCCOSTb-1000seg"
-  - "SEQc-SEQCOSTc-CCCOSTb-1000seg"
-  - "SEQa-SEQCOSTa-CCCOSTc-1000seg"
-  - "SEQb-SEQCOSTa-CCCOSTc-1000seg"
-  - "SEQc-SEQCOSTa-CCCOSTc-1000seg"
-  - "SEQa-SEQCOSTb-CCCOSTc-1000seg"
-  - "SEQb-SEQCOSTb-CCCOSTc-1000seg"
-  - "SEQc-SEQCOSTb-CCCOSTc-1000seg"
-  - "SEQa-SEQCOSTc-CCCOSTc-1000seg"
-  - "SEQb-SEQCOSTc-CCCOSTc-1000seg"
-  - "SEQc-SEQCOSTc-CCCOSTc-1000seg"
+  - "SEQa-SEQCOSTa-CCCOSTa"
+  - "SEQb-SEQCOSTa-CCCOSTa"
+  - "SEQc-SEQCOSTa-CCCOSTa"
+  - "SEQa-SEQCOSTb-CCCOSTa"
+  - "SEQb-SEQCOSTb-CCCOSTa"
+  - "SEQc-SEQCOSTb-CCCOSTa"
+  - "SEQa-SEQCOSTc-CCCOSTa"
+  - "SEQb-SEQCOSTc-CCCOSTa"
+  - "SEQc-SEQCOSTc-CCCOSTa"
+  - "SEQa-SEQCOSTa-CCCOSTb"
+  - "SEQb-SEQCOSTa-CCCOSTb"
+  - "SEQc-SEQCOSTa-CCCOSTb"
+  - "SEQa-SEQCOSTb-CCCOSTb"
+  - "SEQb-SEQCOSTb-CCCOSTb"
+  - "SEQc-SEQCOSTb-CCCOSTb"
+  - "SEQa-SEQCOSTc-CCCOSTb"
+  - "SEQb-SEQCOSTc-CCCOSTb"
+  - "SEQc-SEQCOSTc-CCCOSTb"
+  - "SEQa-SEQCOSTa-CCCOSTc"
+  - "SEQb-SEQCOSTa-CCCOSTc"
+  - "SEQc-SEQCOSTa-CCCOSTc"
+  - "SEQa-SEQCOSTb-CCCOSTc"
+  - "SEQb-SEQCOSTb-CCCOSTc"
+  - "SEQc-SEQCOSTb-CCCOSTc"
+  - "SEQa-SEQCOSTc-CCCOSTc"
+  - "SEQb-SEQCOSTc-CCCOSTc"
+  - "SEQc-SEQCOSTc-CCCOSTc"
   planning_horizons:
   - 2025
   - 2030
@@ -50,9 +55,7 @@ scenario:
   - 2045
   - 2050
   slack:
-  - 0.02
   - 0.05
-  - 0.1
 
 near_opt:
   weights:
@@ -99,29 +102,11 @@ sector_opts:
     b:
       carbon_capture_cost: 1.0
     c:
-      carbon_capture_cost: 0.9
+      carbon_capture_cost: 0.5
 
 options_mapping:
   carbon_capture_cost:
-  # The following are all carbon-capture tech carriers in the model
-  - ["adjustments", "sector", "factor", "Link", "H2 Electrolysis", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "SMR CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biomass to liquid CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "BioSNG", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass to hydrogen", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biomass-to-methanol CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "urban central gas CHP CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biogas to gas CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "urban central solid biomass CHP CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass for industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "process emissions CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "DAC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "lowT industry solid biomass CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "lowT industry methane CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass for mediumT industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for mediumT industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for highT industry CC", "capital_cost"]
+  - ["sector", "carbon_capture_cost_factor"]
   sequestration_cost:
   - ["sector", "co2_sequestration_cost"]
   seq_2025:
@@ -160,28 +145,10 @@ snapshots:
 
 clustering:
   temporal:
-    resolution_sector: "1500seg"
+    resolution_sector: "750seg"
   build_year_aggregation:
     enable: true
     exclude_carriers:
-      # Carriers involved in supplying industrial process heat should
-      # not be clustered since they are optimised endogenously and may
-      # have to be phased out early (which wouldn't be possible with
-      # build year aggregation.)
-      # - "lowT industry solid biomass"
-      # - "lowT industry solid biomass CC"
-      # - "lowT industry methane"
-      # - "lowT industry methane CC"
-      # - "lowT industry heat pump"
-      # - "lowT industry electricity"
-      # - "solid biomass for mediumT industry"
-      # - "solid biomass for mediumT industry CC"
-      # - "gas for mediumT industry"
-      # - "gas for mediumT industry CC"
-      # - "hydrogen for mediumT industry"
-      # - "gas for highT industry"
-      # - "gas for highT industry CC"
-      # - "hydrogen for highT industry"
       # Excluding the following improves accuracy as efficiency changes over time
       - "H2 Electrolysis"
       - "process emissions CC"
@@ -257,7 +224,7 @@ sector:
     2020: 0
     2025: 0.062 # Midpoint
     2030: 0.123 # EU Climate impact study
-    2035: 0.45  # Midpoint               
+    2035: 0.308  # Midpoint               
     2040: 0.493 # EU Climate impact study
     2045: 0.606 # Midpoint               
     2050: 0.719 # EU Climate impact study
@@ -265,7 +232,7 @@ sector:
     2020: 1
     2025: 0.938
     2030: 0.873
-    2035: 0.511
+    2035: 0.653
     2040: 0.434
     2045: 0.267
     2050: 0.101
@@ -378,7 +345,7 @@ solving:
   solver_options:
     gurobi:
       method: 2
-      threads: 6
+      threads: 3
       NumericFocus: 0
       BarHomogeneous: 0
       return_model: false
@@ -388,7 +355,7 @@ solving:
       crossover: 0
     gurobi-numeric:
       method: 2
-      threads: 6
+      threads: 3
       NumericFocus: 3
       BarHomogeneous: 1
       return_model: false
@@ -403,30 +370,4 @@ solving:
   model_options:
     solver_dir: "$SCRATCH"
 
-  # For 50seg/45
-  # mem_mb: 2000
-  # runtime: 10
-
-  # For 100seg/45
-  # mem_mb: 3000
-  # runtime: 30
-
-  # For 300seg/45
-  # mem_mb: 6000
-  # runtime: 200
-
-  # For 300seg/60
-  # mem_mb: 10000
-  # runtime: 400
-
-  # For 500seg/45
-  # mem_mb: 8000  # typically around 7000
-  # runtime: 300  # typically more like 20-30, can be longer due to numerical trouble
-
-  # For 1000seg/45
-  # mem_mb: 13000  # typically around 11-12000; some maximisation take more
-  # runtime: 200   # typically more like 50, but some runs can take much longer
-
-  # For 1000seg/60
-  mem_mb: 30000
-  runtime: 600
+  runtime: 500

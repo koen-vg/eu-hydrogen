@@ -1,0 +1,23 @@
+label,source,target,value
+H2 to other demand,H2,other demand,272.3860518959413
+ambient heat to heat demand,ambient heat,heat demand,1725.2312201521559
+ambient heat to other demand,ambient heat,other demand,423.1439702294765
+battery to electricity grid,battery,electricity grid,271.191979339462
+battery to other demand,battery,other demand,485.6331445426615
+biomass to H2,biomass,H2,174.6169404451847
+biomass to electricity grid,biomass,electricity grid,68.34666502811407
+biomass to gas,biomass,gas,351.3327229602315
+biomass to heat demand,biomass,heat demand,330.0327700109648
+biomass to other demand,biomass,other demand,219.7630703246825
+coal to other demand,coal,other demand,105.99727999981205
+electricity grid to H2,electricity grid,H2,114.73885702835705
+electricity grid to battery,electricity grid,battery,773.3378374625966
+electricity grid to heat demand,electricity grid,heat demand,2039.4550103822448
+electricity grid to other demand,electricity grid,other demand,3557.9960203529627
+fossil gas to gas,fossil gas,gas,406.8767168905731
+gas to heat demand,gas,heat demand,173.79566231118835
+gas to other demand,gas,other demand,491.59229938453404
+green fuel imports to other demand,green fuel imports,other demand,114.73556891957647
+oil to other demand,oil,other demand,2911.138545309762
+oil primary to oil,oil primary,oil,2883.4434875097027
+renewables to electricity grid,renewables,electricity grid,6315.090108496527

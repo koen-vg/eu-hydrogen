@@ -1,0 +1,7 @@
+variable,a,b,min,opt,max
+Transportation,(a),\ $\rightarrow$ (c),0.0,-0.1,-2.7
+Biomass,(a),\ $\rightarrow$ (c),0.0,-0.1,-0.9
+Weather year,(a),\ $\rightarrow$ (b),0.0,-0.0,-1.5
+Electrolysis,(a),\ $\rightarrow$ (b),0.0,0.0,7.3
+CCS,(a),\ $\rightarrow$ (c),0.0,-0.0,-0.2
+Imports,(a),\ $\rightarrow$ (b),0.0,-0.0,-0.0

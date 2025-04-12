@@ -8,7 +8,7 @@ rule solve_sector_network:
         solving=config_provider("solving"),
         foresight=config_provider("foresight"),
         planning_horizons=config_provider("scenario", "planning_horizons"),
-        sector=config_provider("sector")
+        sector=config_provider("sector"),
         custom_extra_functionality=input_custom_extra_functionality,
     input:
         network=RESULTS

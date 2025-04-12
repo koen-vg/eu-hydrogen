@@ -6,28 +6,57 @@ run:
   disable_progressbar: true
   shared_cutouts: true
 
+enable:
+  # Prevent the config from updating retrieved input data; set this to
+  # true for a fresh run.
+  retrieve: false
+
 foresight: "myopic"
 
 scenario:
   ll:
   - c1.5
   clusters:
-  - 60
+  - 50
   opts:
   - ""
   sector_opts:
-  - "Ca-Ia-Ea"
-  - "Cb-Ia-Ea"
-  - "Cc-Ia-Ea"
-  - "Ca-Ib-Ea"
-  - "Cb-Ib-Ea"
-  - "Cc-Ib-Ea"
-  - "Ca-Ia-Eb"
-  - "Cb-Ia-Eb"
-  - "Cc-Ia-Eb"
-  - "Ca-Ib-Eb"
-  - "Cb-Ib-Eb"
-  - "Cc-Ib-Eb"
+  - "Ca-Ia-Ea-Ta"
+  - "Cb-Ia-Ea-Ta"
+  - "Cc-Ia-Ea-Ta"
+  - "Ca-Ib-Ea-Ta"
+  - "Cb-Ib-Ea-Ta"
+  - "Cc-Ib-Ea-Ta"
+  - "Ca-Ia-Eb-Ta"
+  - "Cb-Ia-Eb-Ta"
+  - "Cc-Ia-Eb-Ta"
+  - "Ca-Ib-Eb-Ta"
+  - "Cb-Ib-Eb-Ta"
+  - "Cc-Ib-Eb-Ta"
+  - "Ca-Ia-Ea-Tb"
+  - "Cb-Ia-Ea-Tb"
+  - "Cc-Ia-Ea-Tb"
+  - "Ca-Ib-Ea-Tb"
+  - "Cb-Ib-Ea-Tb"
+  - "Cc-Ib-Ea-Tb"
+  - "Ca-Ia-Eb-Tb"
+  - "Cb-Ia-Eb-Tb"
+  - "Cc-Ia-Eb-Tb"
+  - "Ca-Ib-Eb-Tb"
+  - "Cb-Ib-Eb-Tb"
+  - "Cc-Ib-Eb-Tb"
+  - "Ca-Ia-Ea-Tc"
+  - "Cb-Ia-Ea-Tc"
+  - "Cc-Ia-Ea-Tc"
+  - "Ca-Ib-Ea-Tc"
+  - "Cb-Ib-Ea-Tc"
+  - "Cc-Ib-Ea-Tc"
+  - "Ca-Ia-Eb-Tc"
+  - "Cb-Ia-Eb-Tc"
+  - "Cc-Ia-Eb-Tc"
+  - "Ca-Ib-Eb-Tc"
+  - "Cb-Ib-Eb-Tc"
+  - "Cc-Ib-Eb-Tc"
   planning_horizons:
   - 2025
   - 2030
@@ -73,7 +102,7 @@ sector_opts:
       seq_2050: 550
     c:
       # Optimistic CCS scenario
-      carbon_capture_cost: 0.9
+      carbon_capture_cost: 0.5
       sequestration_cost: 15
       seq_2025: 0
       seq_2030: 100
@@ -95,30 +124,79 @@ sector_opts:
     b:
       # Optimistic electrolysis costs
       electrolysis_cost: 0.5
+  T:
+    a:
+      # Pessimistic electrification: 5 years delayed
+      fc_share_2025: 0
+      fc_share_2030: 0
+      fc_share_2035: 0.004
+      fc_share_2040: 0.039
+      fc_share_2045: 0.073
+      fc_share_2050: 0.127
+
+      ev_share_2025: 0.062
+      ev_share_2030: 0.062
+      ev_share_2035: 0.123
+      ev_share_2040: 0.308
+      ev_share_2045: 0.493
+      ev_share_2050: 0.606
+
+      ice_share_2025: 0.938
+      ice_share_2030: 0.938
+      ice_share_2035: 0.873
+      ice_share_2040: 0.653
+      ice_share_2045: 0.434
+      ice_share_2050: 0.267
+    b:
+      # Baseline electrification
+      fc_share_2025: 0
+      fc_share_2030: 0.004 # EU Climate impact study
+      fc_share_2035: 0.039 # Midpoint
+      fc_share_2040: 0.073 # EU Climate impact study
+      fc_share_2045: 0.127 # Midpoint
+      fc_share_2050: 0.180 # EU Climate impact study
+
+      ev_share_2025: 0.062 # Midpoint
+      ev_share_2030: 0.123 # EU Climate impact study
+      ev_share_2035: 0.308 # Midpoint
+      ev_share_2040: 0.493 # EU Climate impact study
+      ev_share_2045: 0.606 # Midpoint
+      ev_share_2050: 0.719 # EU Climate impact study
+
+      ice_share_2025: 0.938
+      ice_share_2030: 0.873
+      ice_share_2035: 0.653
+      ice_share_2040: 0.434
+      ice_share_2045: 0.267
+      ice_share_2050: 0.101
+    c:
+      # Optimistic electrification: 5 years sooner
+      fc_share_2025: 0.000
+      fc_share_2030: 0.013
+      fc_share_2035: 0.024
+      fc_share_2040: 0.042
+      fc_share_2045: 0.059
+      fc_share_2050: 0.059
+
+      ev_share_2025: 0.062
+      ev_share_2030: 0.382
+      ev_share_2035: 0.622
+      ev_share_2040: 0.769
+      ev_share_2045: 0.916
+      ev_share_2050: 0.916
+
+      ice_share_2025: 0.938
+      ice_share_2030: 0.605
+      ice_share_2035: 0.354
+      ice_share_2040: 0.189
+      ice_share_2045: 0.025
+      ice_share_2050: 0.025
 
 options_mapping:
   electrolysis_cost:
   - ["adjustments", "sector", "factor", "Link", "H2 Electrolysis", "capital_cost"]
   carbon_capture_cost:
-  # The following are all carbon-capture tech carriers in the model
-  - ["adjustments", "sector", "factor", "Link", "H2 Electrolysis", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "SMR CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biomass to liquid CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "BioSNG", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass to hydrogen", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biomass-to-methanol CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "urban central gas CHP CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "biogas to gas CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "urban central solid biomass CHP CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass for industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "process emissions CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "DAC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "lowT industry solid biomass CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "lowT industry methane CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "solid biomass for mediumT industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for mediumT industry CC", "capital_cost"]
-  - ["adjustments", "sector", "factor", "Link", "gas for highT industry CC", "capital_cost"]
+  - ["sector", "carbon_capture_cost_factor"]
   sequestration_cost:
   - ["sector", "co2_sequestration_cost"]
   seq_2025:
@@ -135,6 +213,42 @@ options_mapping:
   - ["sector", "co2_sequestration_potential", 2050]
   green_imports_lim:
   - ["solving", "constraints", "green_imports_lim"]
+  fc_share_2025:
+  - ["sector", "land_transport_fuel_cell_share", 2025]
+  fc_share_2030:
+  - ["sector", "land_transport_fuel_cell_share", 2030]
+  fc_share_2035:
+  - ["sector", "land_transport_fuel_cell_share", 2035]
+  fc_share_2040:
+  - ["sector", "land_transport_fuel_cell_share", 2040]
+  fc_share_2045:
+  - ["sector", "land_transport_fuel_cell_share", 2045]
+  fc_share_2050:
+  - ["sector", "land_transport_fuel_cell_share", 2050]
+  ev_share_2025:
+  - ["sector", "land_transport_electric_share", 2025]
+  ev_share_2030:
+  - ["sector", "land_transport_electric_share", 2030]
+  ev_share_2035:
+  - ["sector", "land_transport_electric_share", 2035]
+  ev_share_2040:
+  - ["sector", "land_transport_electric_share", 2040]
+  ev_share_2045:
+  - ["sector", "land_transport_electric_share", 2045]
+  ev_share_2050:
+  - ["sector", "land_transport_electric_share", 2050]
+  ice_share_2025:
+  - ["sector", "land_transport_ice_share", 2025]
+  ice_share_2030:
+  - ["sector", "land_transport_ice_share", 2030]
+  ice_share_2035:
+  - ["sector", "land_transport_ice_share", 2035]
+  ice_share_2040:
+  - ["sector", "land_transport_ice_share", 2040]
+  ice_share_2045:
+  - ["sector", "land_transport_ice_share", 2045]
+  ice_share_2050:
+  - ["sector", "land_transport_ice_share", 2050]
   
 
 # Country selection: EU-27, excluding Cyprus, Malta, including Norway, UK, Switzerland, and Balkan countries excluding Kosovo (Serbia, Montenegro, Albania, North Macedonia)
@@ -154,7 +268,7 @@ costs:
 
 clustering:
   temporal:
-    resolution_sector: "1500seg"
+    resolution_sector: "750seg"
   build_year_aggregation:
     enable: true
     exclude_carriers:
@@ -220,31 +334,6 @@ sector:
   min_part_load_fischer_tropsch: 0.
   min_part_load_methanolisation: 0.
   min_part_load_methanation: 0.
-  # Transport assumptions
-  land_transport_fuel_cell_share:
-    2020: 0
-    2025: 0
-    2030: 0.004 # EU Climate impact study
-    2035: 0.039 # Midpoint
-    2040: 0.073 # EU Climate impact study
-    2045: 0.127 # Midpoint
-    2050: 0.180 # EU Climate impact study
-  land_transport_electric_share:
-    2020: 0
-    2025: 0.062 # Midpoint
-    2030: 0.123 # EU Climate impact study
-    2035: 0.45  # Midpoint               
-    2040: 0.493 # EU Climate impact study
-    2045: 0.606 # Midpoint               
-    2050: 0.719 # EU Climate impact study
-  land_transport_ice_share:
-    2020: 1
-    2025: 0.938
-    2030: 0.873
-    2035: 0.511
-    2040: 0.434
-    2045: 0.267
-    2050: 0.101
   # Shipping assumptions, from https://www.transportenvironment.org/uploads/files/FuelEU-Maritime-Impact-Assessment.pdf
   shipping_methanol_share:
     2020: 0
@@ -333,7 +422,7 @@ solving:
   solver_options:
     gurobi:
       method: 2
-      threads: 10
+      threads: 3
       NumericFocus: 0
       BarHomogeneous: 0
       return_model: false
@@ -343,7 +432,7 @@ solving:
       crossover: 0
     gurobi-numeric:
       method: 2
-      threads: 10
+      threads: 3
       NumericFocus: 3
       BarHomogeneous: 1
       return_model: false
@@ -358,6 +447,4 @@ solving:
   model_options:
     solver_dir: "$SCRATCH"
 
-  # For 1500seg/60
-  mem_mb: 40000  # In practice: ~24-25GB, but with spike in the beginning
-  runtime: 1000 # Typically more like 150, but some runs take much longer
+  runtime: 500

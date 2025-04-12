@@ -120,7 +120,7 @@ if config["enable"]["retrieve"] and config["enable"].get("retrieve_cutout", True
             validate_checksum(output[0], input[0])
 
 
-if config["enable"]["retrieve"] and config["enable"].get("retrieve_cost_data", True):
+if config["enable"].get("retrieve_cost_data", True):
 
     rule retrieve_cost_data:
         params:

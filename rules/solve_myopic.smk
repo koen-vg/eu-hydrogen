@@ -107,6 +107,21 @@ rule add_brownfield:
 ruleorder: add_existing_baseyear > add_brownfield
 
 
+def solving_mem(w, attempt):
+    # If we find "\d+seg" in the sector_opts, use a regression.
+    # Otherwise, use the config.
+    if "seg" in w.sector_opts:
+        seg = int(re.search(r"(\d+)seg", w.sector_opts).group(1))
+    else:
+        seg = int(config_provider("clustering", "temporal", "resolution_sector")(w).strip("seg"))
+
+    clusters = int(w.clusters)
+
+    # Approximate regression based on testing:
+    solving_mem = max(0, -7500 + 212 * clusters + 13 * seg)
+    return solving_mem * (0.5 + attempt / 2 if attempt <=2 else 2)
+
+
 rule solve_sector_network_myopic:
     params:
         solving=config_provider("solving"),
@@ -135,9 +150,7 @@ rule solve_sector_network_myopic:
         + "logs/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_python.log",
     threads: solver_threads
     resources:
-        mem_mb=lambda w, attempt: (
-            config_provider("solving", "mem_mb")(w) * (1.5 ** (attempt - 1))
-        ),
+        mem_mb=solving_mem,
         runtime=lambda w, attempt: (
             min(
                 config_provider("solving", "runtime", default="6h")(w) * attempt,
@@ -183,9 +196,7 @@ rule near_opt_myopic:
         + "logs/near_opt_myopic/base_s_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{sense}{slack}_python.log",
     threads: solver_threads
     resources:
-        mem_mb=lambda w, attempt: (
-            config_provider("solving", "mem_mb")(w) * (1.5 ** (attempt - 1))
-        ),
+        mem_mb=solving_mem,
         runtime=lambda w, attempt: (
             min(
                 config_provider("solving", "runtime", default="6h")(w) * attempt,

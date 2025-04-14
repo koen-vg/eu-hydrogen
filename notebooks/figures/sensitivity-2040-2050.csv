@@ -1,7 +1,7 @@
 variable,a,b,min,opt,max
 Electrolysis,(a),\ $\rightarrow$ (b),0.5,15.7,28.4
-CCS,(a),\ $\rightarrow$ (c),-8.2,-15.1,-20.7
+CCS,(a),\ $\rightarrow$ (c),-8.2,-15.1,-20.6
 Transportation,(a),\ $\rightarrow$ (c),-7.3,-13.4,-23.6
-Biomass,(a),\ $\rightarrow$ (c),-5.2,-8.1,-10.2
-Imports,(a),\ $\rightarrow$ (b),-11.3,-8.0,-6.9
-Weather year,(a),\ $\rightarrow$ (b),-1.0,0.3,-3.0
+Biomass,(a),\ $\rightarrow$ (c),-5.2,-8.1,-9.8
+Imports,(a),\ $\rightarrow$ (b),-11.3,-8.0,-6.8
+Weather year,(a),\ $\rightarrow$ (b),-1.0,0.3,-2.9

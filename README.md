@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/900660772.svg)](https://doi.org/10.5281/zenodo.15316483)
+
+
 # Little to lose: the case for a robust European green hydrogen strategy
 
 This repository contains the necessary code to reproduce the results in the paper "Little to lose: the case for a robust European green hydrogen strategy" ([preprint](https://arxiv.org/abs/2412.07464)). The repository is based directly on [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur). Modifications can be inspected here in the git history, and are also documented in the paper.

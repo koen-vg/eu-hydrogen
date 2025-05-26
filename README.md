@@ -14,4 +14,6 @@ Finally, using the `config/ccs-scenarios.yaml` configuration to reproduce the CC
 
 The `notebooks` directory contains jupyter notebooks with the all code used to generate the figures in the article. All statistics needed for this figures have been compiled from the solved models and stored under `notebooks/cache_results.csv`. The main plotting notebook (`paper_plots.ipynb`), automatically uses these statistics, so that the plots can be reproduced without re-running all optimisations.
 
+The solved networks can be found at [https://doi.org/10.11582/2025.00068](https://doi.org/10.11582/2025.00068). These can be used to further investigate results, beyond the information used in the paper (and provided in aggregate in the cached result files).
+
 All modifications to PyPSA-Eur and plotting code is licensed under the MIT license. The figures themselves are licensed under CC-BY-4.0.
